@@ -1,0 +1,91 @@
+<html>
+  <header>
+
+  </header>
+  <body>
+    <form onsubmit="addName(); return false;">
+      <input type="text" id="nameInput">
+      <input type="submit" value="Add name">
+    </form>
+
+    <div id="nameListDisplay"></div>
+
+    <button onclick="calculate()">calculate</button>
+
+    <div id="calculatedDisplay"></div>
+
+    <button onclick="reset()">reset</button>
+
+    <script type="text/javascript">
+      let nameInput = document.getElementById('nameInput');
+      let nameListDisplay = document.getElementById('nameListDisplay');
+      let calculatedDisplay = document.getElementById('calculatedDisplay');
+
+      let nameList = [];
+      let assignedList = [];
+
+      displayNames();
+
+      function calculate() {
+        assignedList = [];
+
+        for (let i = 0; i < nameList.length; i++) {
+          let randomIndex = -1;
+          let attempts = 0;
+
+          while (
+            randomIndex == -1
+            || randomIndex == i
+            || assignedList.indexOf(nameList[randomIndex]) != -1
+          ) {
+            randomIndex = Math.floor(Math.random() * nameList.length);
+            attempts++;
+
+            if (attempts >= nameList.length) {
+              calculate();
+              return;
+            }
+          }
+
+          assignedList.push(nameList[randomIndex]);
+        }
+
+        displayCalculated();
+      }
+
+      function displayCalculated() {
+        let html = '<ul>';
+        for (let i=0; i < nameList.length; i++) {
+          html += '<li>' + nameList[i] + '=>' + assignedList[i] + '</li>';
+        }
+        html += '</ul>';
+
+        calculatedDisplay.innerHTML = html;
+      }
+
+      function displayNames() {
+        let html = '<ul>';
+        for (let name of nameList) {
+          html += `<li>${name}</li>`;
+        }
+        html += '</ul>';
+
+        nameListDisplay.innerHTML = html;
+      }
+
+      function addName() {
+        nameList.push(nameInput.value);
+        nameInput.value = '';
+        displayNames();
+      }
+
+      function reset() {
+        nameList = [];
+        assignedList = [];
+
+        calculatedDisplay.innerHTML = '';
+        nameListDisplay.innerHTML = '';
+      }
+    </script>
+  </body>
+</html>
