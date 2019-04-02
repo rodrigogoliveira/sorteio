@@ -8,14 +8,9 @@ export default class Sortition extends Component {
       nameList: [],
       assignedList: []
     }
-
-    this.addName = this.addName.bind(this);
-    this.changeName = this.changeName.bind(this);
-    this.calculate = this.calculate.bind(this);
-    this.reset = this.reset.bind(this);
   }
 
-  addName() {
+  addName = () => {
     const name = this.state.name;
     let nameList = this.state.nameList;
     nameList.push(name);
@@ -26,18 +21,11 @@ export default class Sortition extends Component {
     });
   }
 
-  changeName(e) {
+  changeName = (e) => {
     this.setState({...this.state, name: e.target.value });
   }
 
-  renderNameList() {
-    const nameList = this.state.nameList || [];
-    return nameList.map((name, index) => (
-      <li key={index}>{name}</li>
-    ));
-  }
-
-  calculate() {
+  calculate = () => {
     let newAssignedList = [];
 
     for (let i = 0; i < this.state.nameList.length; i++) {
@@ -66,15 +54,7 @@ export default class Sortition extends Component {
     });
   }
 
-  renderCalculated() {
-    const nameList = this.state.nameList || [];
-    const assignedList = this.state.assignedList || [];
-    return assignedList.map((name, index) => (
-      <li key={index}>{nameList[index]} - {name}</li>
-    ));
-  }
-
-  reset() {
+  reset = () => {
     this.setState({
       nameList: [],
       assignedList: []
@@ -98,7 +78,9 @@ export default class Sortition extends Component {
         </div>
 
         <ul>
-          {this.renderNameList()}
+          {this.state.nameList.map((name, index) => (
+            <li key={index}>{name}</li>
+          ))}
         </ul>
 
         <button onClick={this.calculate}>
@@ -106,7 +88,9 @@ export default class Sortition extends Component {
         </button>
 
         <ul>
-          {this.renderCalculated()}
+          {this.state.assignedList.map((name, index) => (
+            <li key={index}>{this.state.nameList[index]} - {name}</li>
+          ))}
         </ul>
 
         <button onClick={this.reset}>reset</button>
